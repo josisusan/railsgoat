@@ -1,15 +1,33 @@
 <% if current_user %>
-  <header>
+  <header class="nav">
       
-      <span style="color:#eee;margin-left:10px;">
-        Font Size:
-        <a data-no-turbolink='true' href="/dashboard/home?font=8pt" style="font-size:10pt;color:#eee;">A</a>
-        <a data-no-turbolink='true' href="/dashboard/home?font=200%25" style="font-size:18pt;color:#eee;">A</a>
+      <span style="color:#eee;margin-left:10px;" class="nav-logo">
+        Human Resource
       </span>
       
+      <div class="menu my-dropdown-toggle">
+        <span class="menu-item">Menu</span>
+        <ul class="my-dropdown-content">
+          <li><%= link_to "Dashboard", home_dashboard_index_path %></li>
+          <% if is_admin? %>
+            <li><%= link_to "Manage Users", admin_dashboard_path(:admin_id => "1") %></li>
+            <li><%= link_to "View Analytics", admin_analytics_path(:admin_id => "1") %></li>
+          <% end %>
+          <li><%= link_to "Benefit Forms", user_benefit_forms_path(user_id: current_user.id) %></li>
+          <li><%= link_to "401k Info", user_retirement_index_path(user_id: current_user.id) %></li>
+          <li><%= link_to "PTO", user_paid_time_off_index_path(user_id: current_user.id) %></li>
+          <li><%= link_to "Work Info", user_work_info_index_path(user_id: current_user.id) %></li>
+          <li><%= link_to "Performance", user_performance_index_path(user_id: current_user.id) %></li>
+          <li><%= link_to "Pay", user_pay_index_path(user_id: current_user.id) %></li>
+        </ul>
+      </div>
+      
       <div class="user-profile">
+        <%= link_to user_messages_path(user_id: current_user.id) do %>
+          <span class="message-icon" data-icon="&#xe040;" ></span>
+        <% end %>
         <a data-toggle="dropdown" class="dropdown-toggle">
-          <img src=" <%= image_path('profile_color.jpg')%>"  alt="profile">
+          <%= current_user.first_name.html_safe %>
         </a>
         <span class="caret"></span>
         <ul class="dropdown-menu pull-right">
@@ -21,55 +39,24 @@
           </li>
         </ul>
       </div>
-      <ul class="mini-nav">
-       <li style="color: #FFFFFF">
-          <!--
-          I'm going to use HTML safe because we had some weird stuff
-          going on with funny chars and jquery, plus it says safe so I'm guessing
-          nothing bad will happen
-          -->
-          Welcome, <%= current_user.first_name.html_safe %>
-       </li>
-      </ul>
-      <ul class="mini-nav">
-        <li>
-          <%= button_to "Visit Tutorial", nil,
-          {
-           :class => "btn",
-           :method => "get",
-           :onclick => "window.open('https://github.com/OWASP/railsgoat/wiki', '_blank')"
-           }  %>
-        </li>
-      </ul>
   </header>
 <% else %>
   <!-- Want to use this template whether auth'd or not so I've got some code to determine how to render below -->
-  <header>
-      <ul class="mini-nav">
-           <li>
-             <%= button_to "Signup", signup_path, {:class => "btn btn-primary", :method => "get"} %>
-           </li>
-         </ul>
-      <ul class="mini-nav">
-           <li>
-             <%= button_to "login", login_path, {:class => "btn", :method => "get"} %>
-           </li>
-         </ul>
-      <ul class="mini-nav">
-           <li>
-             <%= button_to "Tutorial Credentials", "#myModalLabel1", {:id => "show_creds_btn", :class => "btn btn-danger", :method => "get"} %>
-           </li>
-      </ul>
-      <ul class="mini-nav">
-        <li>
-            <%= button_to "Visit Tutorial", nil,
-            {
-             :class => "btn",
-             :method => "get",
-             :onclick => "window.open('https://github.com/OWASP/railsgoat/wiki', '_blank')"
-             }  %>
-        </li>
-      </ul>
+  <header class="nav">
+      <span style="color:#eee;margin-left:10px;" class="nav-logo">
+        Human Resource
+      </span>
+      <div class="user-profile">
+        <a data-toggle="dropdown" class="dropdown-toggle">Not Signed In Yet?</a>
+        <ul class="dropdown-menu pull-right">
+          <li>
+           <%= link_to "Sign Up", signup_path %>
+          </li>
+          <li>
+            <%= link_to "Log In", login_path %>
+          </li>
+        </ul>
+      </div>
   </header>
 
   <div id="modal_div" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myAlert" aria-hidden="true">
